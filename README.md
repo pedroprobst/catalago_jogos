@@ -10,8 +10,7 @@
 - **Disciplina:** Programação Web
 - **Nome do Projeto:** Catálogo de Jogos
 - **Integrantes do Grupo:**
-  1. PEDRO DANIEL GODINHO PROBST - MAT. 2023009207
-
+  **PEDRO DANIEL GODINHO PROBST - MAT. 2023009207**
 ---
 
 ## 🏛️ Arquitetura em Três Camadas
@@ -44,21 +43,6 @@ O sistema foi rigorosamente desenvolvido sem dados fixos no HTML e sem depender 
      - `plataforma`: `VARCHAR(100) NOT NULL DEFAULT 'PC'`
      - `preco`: `NUMERIC(10, 2) NOT NULL DEFAULT 0.00`
      - `avaliacao`: `NUMERIC(3, 1) NOT NULL DEFAULT 5.0 CHECK (avaliacao >= 0 AND avaliacao <= 5)`
-
----
-
-## 💡 Justificativa Técnica da Escolha do PostgreSQL
-
-Para o desenvolvimento deste catálogo e fórum, optou-se pelo **PostgreSQL** pelas seguintes razões técnicas e acadêmicas:
-
-1. **Conformidade Estrita com ACID (Atomicidade, Consistência, Isolamento e Durabilidade):**  
-   Garante que operações de cadastro, edição ou exclusão de jogos sejam atômicas. Falhas ou cancelamentos não deixam a base de dados em estado inconsistente.
-2. **Garantia de Tipagem Estrita e Restrições de Integridade:**  
-   Campos como `preco` (`NUMERIC(10,2)`) e `avaliacao` (`CHECK (avaliacao >= 0 AND avaliacao <= 5)`) possuem validações no nível do banco (*schema enforcement*), impedindo dados incoerentes.
-3. **Persistência Permanente vs. Soluções Voláteis:**  
-   Diferente de bancos em memória (*in-memory*) ou arquivos JSON locais sujeitos a concorrência e corrupção, o PostgreSQL oferece persistência corporativa em disco e suporte a concorrência multiusuário (*MVCC*).
-4. **Capacidade Avançada de Busca Textual:**  
-   Permite consultas flexíveis e velozes usando operadores como `ILIKE` (busca case-insensitive), viabilizando o sistema de busca dinâmico por títulos, gêneros, sinopses e plataformas.
 
 ---
 
