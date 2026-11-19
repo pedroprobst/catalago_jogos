@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GameVault | Catálogo & Fórum de Jogos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="main-header">
+    <div class="container header-container">
+      <div class="logo-box">
+        <div class="logo-icon">🎮</div>
+        <div>
+          <h1 class="logo-title">Catálogo de<span> Jogos</span></h1>
+          <p class="logo-subtitle">Fórum & Catálogo Colaborativo de Games</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <a href="#section-cadastro" class="btn btn-primary" id="btn-scroll-cadastro">
+          <span class="icon">➕</span> Novo Jogo
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+
+  <main class="container main-content">
+
+    <section class="hero-section">
+      <div class="hero-text">
+        <h2>Explore, avalie e compartilhe suas paixões no mundo dos games</h2>
+        <p>Sistema acadêmico em 3 camadas com persistência completa em PostgreSQL e arquitetura REST.</p>
+      </div>
+      <div class="stats-pills">
+        <div class="stat-pill">
+          <span class="stat-number" id="total-jogos-badge">0</span>
+          <span class="stat-label">Jogos Cadastrados</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-number" id="total-generos-badge">0</span>
+          <span class="stat-label">Gêneros Distintos</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="search-filter-card">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="campo-busca" placeholder="Buscar por título, gênero, sinopse ou plataforma..."
+          autocomplete="off">
+        <button id="btn-limpar-busca" class="btn-clear" title="Limpar busca" style="display: none;">✕</button>
+      </div>
+
+      <div class="filter-actions">
+        <select id="filtro-genero" class="custom-select">
+          <option value="">Todos os Gêneros</option>
+        </select>
+        <button id="btn-recarregar" class="btn btn-secondary" title="Recarregar catálogo">
+          🔄 Atualizar
+        </button>
+      </div>
+    </section>
+
+    <section class="catalog-section">
+      <div class="section-title-wrap">
+        <div>
+          <h3 class="section-title">Acervo de Jogos</h3>
+          <p class="section-hint">💡 Dica: Clique no card de qualquer jogo para abrir a janela de detalhes completos!
+          </p>
+        </div>
+        <span class="result-count" id="contador-resultados">Carregando títulos...</span>
+      </div>
+
+      <div id="grid-jogos" class="games-grid"></div>
+
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <div class="empty-icon">🕹️</div>
+        <h4>Nenhum jogo encontrado</h4>
+        <p>Tente ajustar os termos da sua busca ou cadastre um novo título abaixo.</p>
+      </div>
+    </section>
+
+    <section id="section-cadastro" class="form-section">
+      <div class="form-card">
+        <div class="form-header">
+          <div class="form-badge">Fórum Comunitário</div>
+          <h3>Cadastrar Novo Jogo no Catálogo</h3>
+          <p>Preencha os dados abaixo. Todos os campos com asterisco (*) são obrigatórios.</p>
+        </div>
+
+        <form id="form-cadastro-jogo" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="cad-titulo">Título do Jogo *</label>
+              <input type="text" id="cad-titulo" name="titulo" placeholder="Ex: Elden Ring" required maxlength="100">
+              <span class="error-msg" id="erro-cad-titulo"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="cad-genero">Gênero *</label>
+              <input type="text" id="cad-genero" name="genero" placeholder="Ex: Soulslike / RPG" required
+                maxlength="50">
+              <span class="error-msg" id="erro-cad-genero"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="cad-plataforma">Plataforma Disponível *</label>
+              <input type="text" id="cad-plataforma" name="plataforma"
+                placeholder="Ex: PC, PS5, Xbox Series X|S, Switch" required maxlength="100">
+              <span class="error-msg" id="erro-cad-plataforma"></span>
+            </div>
+
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="cad-preco">Preço (R$) * <small>(0 para Gratuito)</small></label>
+                <input type="number" id="cad-preco" name="preco" placeholder="0.00" step="0.01" min="0" required>
+                <span class="error-msg" id="erro-cad-preco"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="cad-avaliacao">Avaliação (0.0 a 5.0) *</label>
+                <input type="number" id="cad-avaliacao" name="avaliacao" placeholder="5.0" step="0.1" min="0" max="5"
+                  required>
+                <span class="error-msg" id="erro-cad-avaliacao"></span>
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="cad-imagem">URL da Imagem de Capa *</label>
+              <input type="url" id="cad-imagem" name="imagem" placeholder="Ex: https://images.unsplash.com/photo-..."
+                required>
+              <span class="error-msg" id="erro-cad-imagem"></span>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="cad-sinopse">Sinopse do Jogo *</label>
+              <textarea id="cad-sinopse" name="sinopse" rows="3"
+                placeholder="Descreva a história, mecânicas ou premissa principal..." required></textarea>
+              <span class="error-msg" id="erro-cad-sinopse"></span>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="cad-comentarios">Review / Comentário da Comunidade (Opcional)</label>
+              <textarea id="cad-comentarios" name="comentarios" rows="2"
+                placeholder="Escreva sua opinião, análise ou recomendação no estilo fórum..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="reset" class="btn btn-outline">Limpar Campos</button>
+            <button type="submit" class="btn btn-primary" id="btn-submit-cad">
+              <span class="btn-text">Publicar Jogo no Catálogo</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+
+  <div id="modal-detalhes" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true">
+    <div class="modal-card modal-detalhes-card">
+      <div class="modal-header">
+        <div class="modal-header-meta">
+          <span class="genre-tag" id="detalhes-genero">Gênero</span>
+          <span class="card-id-badge" id="detalhes-id">#0</span>
+        </div>
+        <button id="btn-fechar-detalhes" class="modal-close-btn" title="Fechar (Esc)">&times;</button>
+      </div>
+
+      <div class="modal-detalhes-content">
+        <div class="modal-detalhes-media">
+          <img id="detalhes-imagem" src="" alt="Capa do Jogo" class="detalhes-img">
+        </div>
+
+        <div class="modal-detalhes-info">
+          <h3 id="detalhes-titulo" class="detalhes-title">Título do Jogo</h3>
+
+          <div class="detalhes-badges-row">
+            <div class="detalhes-badge-item">
+              <span class="badge-label">Plataformas:</span>
+              <span class="badge-value" id="detalhes-plataforma">PC, Consoles</span>
+            </div>
+            <div class="detalhes-badge-item">
+              <span class="badge-label">Preço:</span>
+              <span class="badge-value price-tag" id="detalhes-preco">R$ 0,00</span>
+            </div>
+            <div class="detalhes-badge-item">
+              <span class="badge-label">Avaliação:</span>
+              <div class="stars-wrapper" id="detalhes-estrelas"></div>
+            </div>
+          </div>
+
+          <div class="detalhes-section">
+            <h4>📖 Sinopse</h4>
+            <p id="detalhes-sinopse" class="detalhes-text"></p>
+          </div>
+
+          <div class="detalhes-section">
+            <h4>💬 Review / Comentários da Comunidade</h4>
+            <div class="card-forum-box forum-detalhes-box">
+              <p id="detalhes-comentarios" class="forum-comment-text"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" id="btn-fechar-detalhes-footer" class="btn btn-secondary">Fechar Janela</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="modal-edicao" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h4>Editar Informações do Jogo</h4>
+        <button id="btn-fechar-modal-edicao" class="modal-close-btn" title="Fechar (Esc)">&times;</button>
+      </div>
+
+      <form id="form-editar-jogo" novalidate>
+        <input type="hidden" id="edit-id">
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="edit-titulo">Título *</label>
+            <input type="text" id="edit-titulo" required maxlength="100">
+            <span class="error-msg" id="erro-edit-titulo"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-genero">Gênero *</label>
+            <input type="text" id="edit-genero" required maxlength="50">
+            <span class="error-msg" id="erro-edit-genero"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-plataforma">Plataforma Disponível *</label>
+            <input type="text" id="edit-plataforma" required maxlength="100">
+            <span class="error-msg" id="erro-edit-plataforma"></span>
+          </div>
+
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="edit-preco">Preço (R$) *</label>
+              <input type="number" id="edit-preco" step="0.01" min="0" required>
+              <span class="error-msg" id="erro-edit-preco"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="edit-avaliacao">Avaliação (0.0 a 5.0) *</label>
+              <input type="number" id="edit-avaliacao" step="0.1" min="0" max="5" required>
+              <span class="error-msg" id="erro-edit-avaliacao"></span>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="edit-imagem">URL da Imagem de Capa *</label>
+            <input type="url" id="edit-imagem" required>
+            <span class="error-msg" id="erro-edit-imagem"></span>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="edit-sinopse">Sinopse *</label>
+            <textarea id="edit-sinopse" rows="3" required></textarea>
+            <span class="error-msg" id="erro-edit-sinopse"></span>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="edit-comentarios">Review / Comentários</label>
+            <textarea id="edit-comentarios" rows="2"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" id="btn-cancelar-modal-edicao" class="btn btn-outline">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-salvar-edicao">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <footer class="main-footer">
+    <div class="container footer-content">
+      <p><strong>GameVault</strong> — Projeto Acadêmico de Programação Web (Arquitetura 3 Camadas)</p>
+      <p class="tech-stack-pills">
+        <span>HTML5 & Vanilla JS</span> •
+        <span>Node.js & Express</span> •
+        <span>PostgreSQL & Driver PG</span>
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
